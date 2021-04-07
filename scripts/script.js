@@ -23,13 +23,75 @@ const Validate = {
         div.innerHTML = error;
         input.parentNode.appendChild(div);
         input.focus();
+    },
+
+    isCEP(input){
+        Validate.clearErrors(input);
+        let value = input.value;
+        let error = null;
+        const cleanValues = value.replace(/\D/g, '');
+
+        if(cleanValues.length != 8){
+            error = "CEP incorreto";
+            Validate.displayError(input, error);
+        }
+        input.value = value;
+    },
+
+    isCPF_CNPJ(input){
+        Validate.clearErrors(input);
+        let value = input.value;
+        let error = null;
+        const clearErrors = value.replace(/\D/g, '');
+
+        if (clearErrors.length < 11){
+            error  = "CPF incorreto";
+        }
+
+        else if(clearErrors.length > 11 && clearErrors.length < 14){
+            error = "CNPJ incorreto";
+        } 
+        
+        if(error){
+            Validate.displayError(input,error);
+            return;
+        }
+        input.value = value;
     }
+
 }
 
 
 const Mask = {
+    cep(input){
+        let value = input.value;
+        value = value.replace(/\D/,"");
+        if(value.length > 8){
+            value = value.slice(0,-1);
+        }
+        value = value.replace(/(\d{5})(\d{3})/, "$1-$2");
 
+        input.value = value;
+    },
 
+    cpfCnpj(input){
+        let value = input.value;
+        value = value.replace(/\D/, "");
 
+        if(value.length > 14 ){
+            value = value.slice(0,-1);
+            value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+            input.value = value;
+           
+        }
+
+        
+        if(value.length == 11){
+            console.log("teste");
+            value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            input.value = value;
+        }
+            
+    }
   
 }
